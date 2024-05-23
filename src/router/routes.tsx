@@ -3,6 +3,7 @@ import ProductList from "../features/product-list/ProductList";
 import Home from "../pages/Home";
 import LoginPage from "../pages/LoginPage";
 import Register from "../features/auth/components/Register";
+import CartPage from "../pages/CartPage";
 
 export const router = createBrowserRouter([
   {
@@ -22,5 +23,9 @@ export const router = createBrowserRouter([
   {
     path: "/auth/register",
     element: <Register />,
+  },
+  {
+    path: "/cart",
+    element: <CartPage />,
   },
 ]);
