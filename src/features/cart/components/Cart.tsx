@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 const products = [
   {
@@ -29,13 +29,21 @@ const products = [
 ];
 
 export default function Cart() {
+  const location = useLocation();
+
   return (
     <div className="mx-auto bg-white  max-w-2xl px-4 py-0 sm:px-6 mb-5 sm:py-0 lg:max-w-5xl lg:px-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6 pt-4">
-        Shopping cart
-      </h1>
+      {location.pathname === "/cart/checkout" ? (
+        <h1 className="text-3xl font-bold text-gray-900 mb-6 pt-4">
+          Product Summary
+        </h1>
+      ) : (
+        <h1 className="text-3xl font-bold text-gray-900 mb-6 pt-4">
+          Shopping cart
+        </h1>
+      )}
 
-      <div className="flow-root border-t border-gray-200 px-4  py-6 sm:px-6 ">
+      <div className="flow-root border-t border-gray-200 px-4 border-b py-6 sm:px-6 ">
         <ul role="list" className="-my-6 divide-y divide-gray-200">
           {products.map((product) => (
             <li key={product.id} className="flex py-6">
@@ -95,12 +103,12 @@ export default function Cart() {
           Shipping and taxes calculated at checkout.
         </p>
         <div className="mt-6  ">
-          <a
-            href="#"
+          <Link
+            to={"/cart/checkout"}
             className="flex  items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium  text-white shadow-sm hover:bg-indigo-700"
           >
             Checkout
-          </a>
+          </Link>
         </div>
         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
           <p>
