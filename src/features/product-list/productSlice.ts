@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Paginated_Products } from "../../types/productTypes";
+import { Option, Paginated_Products } from "../../types/productTypes";
 import {
+  fetchAllBrand,
+  fetchAllCategory,
   fetchAllProducts,
   fetchProductsByFilter,
   // fetchSortedProducts,
@@ -10,12 +12,16 @@ type State = {
   isLoading: boolean;
   products: Paginated_Products | null;
   error: string;
+  brands: Option[];
+  category: Option[];
 };
 
 const initialState: State = {
   isLoading: false,
   products: null,
   error: "",
+  brands: [],
+  category: [],
 };
 
 export const fetchProductsAsync = createAsyncThunk(
@@ -67,6 +73,23 @@ export const fetchFilteredProductsAsync = createAsyncThunk(
 //   }
 // );
 
+export const fetchAllCategoryAsync = createAsyncThunk(
+  "product/fetchCategory",
+  async () => {
+    const response = await fetchAllCategory();
+    const categories = await response.json();
+    return categories;
+  }
+);
+export const fetchAllBrandAsync = createAsyncThunk(
+  "product/fetchBrands",
+  async () => {
+    const response = await fetchAllBrand();
+    const brands = await response.json();
+    return brands;
+  }
+);
+
 const productSlice = createSlice({
   name: "product",
   initialState,
@@ -95,6 +118,28 @@ const productSlice = createSlice({
       .addCase(fetchFilteredProductsAsync.rejected, (state, action) => {
         (state.isLoading = false),
           (state.products = null),
+          (state.error = action.error.message as string);
+      })
+      .addCase(fetchAllCategoryAsync.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAllCategoryAsync.fulfilled, (state, action) => {
+        (state.isLoading = false), (state.category = action.payload);
+      })
+      .addCase(fetchAllCategoryAsync.rejected, (state, action) => {
+        (state.isLoading = false),
+          (state.category = []),
+          (state.error = action.error.message as string);
+      })
+      .addCase(fetchAllBrandAsync.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAllBrandAsync.fulfilled, (state, action) => {
+        (state.isLoading = false), (state.brands = action.payload);
+      })
+      .addCase(fetchAllBrandAsync.rejected, (state, action) => {
+        (state.isLoading = false),
+          (state.brands = []),
           (state.error = action.error.message as string);
       });
     // .addCase(fetchSortedProductsAsync.pending, (state) => {

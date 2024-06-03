@@ -14,6 +14,8 @@ import { FilterSection, Option, SortedOption } from "../../types/productTypes";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   Filter,
+  fetchAllBrandAsync,
+  fetchAllCategoryAsync,
   fetchFilteredProductsAsync,
   // fetchSortedProductsAsync,
 } from "../../features/product-list/productSlice";
@@ -26,92 +28,16 @@ const sortOptions: SortedOption[] = [
   { name: "Price: High to Low", sort: "-price", current: false },
 ];
 
-const filters = [
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: "smartphones", label: "smartphones", checked: false },
-      { value: "laptops", label: "laptops", checked: false },
-      { value: "fragrances", label: "fragrances", checked: false },
-      { value: "skincare", label: "skincare", checked: false },
-      { value: "groceries", label: "groceries", checked: false },
-      {
-        value: "home-decoration",
-        label: "home decoration",
-        checked: false,
-      },
-    ],
-  },
-  {
-    id: "brand",
-    name: "Brands",
-    options: [
-      { value: "Apple", label: "Apple", checked: false },
-      { value: "Samsung", label: "Samsung", checked: false },
-      { value: "OPPO", label: "OPPO", checked: false },
-      { value: "Huawei", label: "Huawei", checked: false },
-      {
-        value: "Microsoft Surface",
-        label: "Microsoft Surface",
-        checked: false,
-      },
-      { value: "Infinix", label: "Infinix", checked: false },
-      { value: "HP Pavilion", label: "HP Pavilion", checked: false },
-      {
-        value: "Impression of Acqua Di Gio",
-        label: "Impression of Acqua Di Gio",
-        checked: false,
-      },
-      { value: "Royal_Mirage", label: "Royal_Mirage", checked: false },
-      {
-        value: "Fog Scent Xpressio",
-        label: "Fog Scent Xpressio",
-        checked: false,
-      },
-      { value: "Al Munakh", label: "Al Munakh", checked: false },
-      {
-        value: "Lord - Al-Rehab",
-        label: "Lord   Al Rehab",
-        checked: false,
-      },
-      { value: "L'Oreal Paris", label: "L'Oreal Paris", checked: false },
-      { value: "Hemani Tea", label: "Hemani Tea", checked: false },
-      { value: "Dermive", label: "Dermive", checked: false },
-      {
-        value: "ROREC White Rice",
-        label: "ROREC White Rice",
-        checked: false,
-      },
-      { value: "Fair & Clear", label: "Fair & Clear", checked: false },
-      { value: "Saaf & Khaas", label: "Saaf & Khaas", checked: false },
-      {
-        value: "Bake Parlor Big",
-        label: "Bake Parlor Big",
-        checked: false,
-      },
-      {
-        value: "Baking Food Items",
-        label: "Baking Food Items",
-        checked: false,
-      },
-      { value: "fauji", label: "fauji", checked: false },
-      { value: "Dry Rose", label: "Dry Rose", checked: false },
-      { value: "Boho Decor", label: "Boho Decor", checked: false },
-      { value: "Flying Wooden", label: "Flying Wooden", checked: false },
-      { value: "LED Lights", label: "LED Lights", checked: false },
-      { value: "luxury palace", label: "luxury palace", checked: false },
-      { value: "Golden", label: "Golden", checked: false },
-    ],
-  },
-];
-
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function ProductLayout() {
   const totalItems = useAppSelector((state) => state.products.products?.items);
+  const categories = useAppSelector((state) => state.products.category);
+  const brands = useAppSelector((state) => state.products.brands);
+  const dispatchCategory = useAppDispatch();
+  const dispatchBrands = useAppDispatch();
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
@@ -123,6 +49,19 @@ export default function ProductLayout() {
   const [lastKey, setLastKey] = useState<string>("");
   const [checked, setChecked] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
+
+  const filters = [
+    {
+      id: "category",
+      name: "Category",
+      options: categories,
+    },
+    {
+      id: "brand",
+      name: "Brands",
+      options: brands,
+    },
+  ];
 
   // const limit = ITEM_PER_PAGE;
 
@@ -194,6 +133,11 @@ export default function ProductLayout() {
   useEffect(() => {
     setPage(1);
   }, [totalItems]);
+
+  useEffect(() => {
+    dispatchCategory(fetchAllCategoryAsync());
+    dispatchBrands(fetchAllBrandAsync());
+  }, []);
 
   return (
     <div className="bg-white ">

@@ -101,3 +101,17 @@ export const fetchProductsByFilter = async ({
 
 //   return sortedProducts;
 // };
+
+export const fetchAllCategory = async () => {
+  const response = await fetch("http://localhost:5000/category");
+  return response as Response;
+  // const categories = await response.json();
+  // return categories as Option[];
+};
+
+export const fetchAllBrand = async () => {
+  const response = await fetch("http://localhost:5000/brands");
+  return response as Response;
+  // const brands = await response.json();
+  // return brands as Option[];
+};
