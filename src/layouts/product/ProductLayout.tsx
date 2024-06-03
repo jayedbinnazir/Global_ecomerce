@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { ChangeEvent, Fragment, useEffect, useState } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
@@ -10,49 +10,98 @@ import {
 } from "@heroicons/react/20/solid";
 import { Outlet } from "react-router-dom";
 import Pagination from "../../features/product-list/components/pagination/Pagination";
+import { FilterSection, Option, SortedOption } from "../../types/productTypes";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  Filter,
+  fetchFilteredProductsAsync,
+  // fetchSortedProductsAsync,
+} from "../../features/product-list/productSlice";
+import { ITEMS_PER_PAGE } from "../../Conts";
+// import { ITEM_PER_PAGE } from "../../Conts";
 
-const sortOptions = [
-  { name: "Most Popular", href: "#", current: true },
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Newest", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
+const sortOptions: SortedOption[] = [
+  { name: "Best Rating", sort: "-rating", current: false },
+  { name: "Price: Low to High", sort: "price", current: false },
+  { name: "Price: High to Low", sort: "-price", current: false },
 ];
 
 const filters = [
   {
-    id: "color",
-    name: "Color",
-    options: [
-      { value: "white", label: "White", checked: false },
-      { value: "beige", label: "Beige", checked: false },
-      { value: "blue", label: "Blue", checked: true },
-      { value: "brown", label: "Brown", checked: false },
-      { value: "green", label: "Green", checked: false },
-      { value: "purple", label: "Purple", checked: false },
-    ],
-  },
-  {
     id: "category",
     name: "Category",
     options: [
-      { value: "new-arrivals", label: "New Arrivals", checked: false },
-      { value: "sale", label: "Sale", checked: false },
-      { value: "travel", label: "Travel", checked: true },
-      { value: "organization", label: "Organization", checked: false },
-      { value: "accessories", label: "Accessories", checked: false },
+      { value: "smartphones", label: "smartphones", checked: false },
+      { value: "laptops", label: "laptops", checked: false },
+      { value: "fragrances", label: "fragrances", checked: false },
+      { value: "skincare", label: "skincare", checked: false },
+      { value: "groceries", label: "groceries", checked: false },
+      {
+        value: "home-decoration",
+        label: "home decoration",
+        checked: false,
+      },
     ],
   },
   {
-    id: "size",
-    name: "Size",
+    id: "brand",
+    name: "Brands",
     options: [
-      { value: "2l", label: "2L", checked: false },
-      { value: "6l", label: "6L", checked: false },
-      { value: "12l", label: "12L", checked: false },
-      { value: "18l", label: "18L", checked: false },
-      { value: "20l", label: "20L", checked: false },
-      { value: "40l", label: "40L", checked: true },
+      { value: "Apple", label: "Apple", checked: false },
+      { value: "Samsung", label: "Samsung", checked: false },
+      { value: "OPPO", label: "OPPO", checked: false },
+      { value: "Huawei", label: "Huawei", checked: false },
+      {
+        value: "Microsoft Surface",
+        label: "Microsoft Surface",
+        checked: false,
+      },
+      { value: "Infinix", label: "Infinix", checked: false },
+      { value: "HP Pavilion", label: "HP Pavilion", checked: false },
+      {
+        value: "Impression of Acqua Di Gio",
+        label: "Impression of Acqua Di Gio",
+        checked: false,
+      },
+      { value: "Royal_Mirage", label: "Royal_Mirage", checked: false },
+      {
+        value: "Fog Scent Xpressio",
+        label: "Fog Scent Xpressio",
+        checked: false,
+      },
+      { value: "Al Munakh", label: "Al Munakh", checked: false },
+      {
+        value: "Lord - Al-Rehab",
+        label: "Lord   Al Rehab",
+        checked: false,
+      },
+      { value: "L'Oreal Paris", label: "L'Oreal Paris", checked: false },
+      { value: "Hemani Tea", label: "Hemani Tea", checked: false },
+      { value: "Dermive", label: "Dermive", checked: false },
+      {
+        value: "ROREC White Rice",
+        label: "ROREC White Rice",
+        checked: false,
+      },
+      { value: "Fair & Clear", label: "Fair & Clear", checked: false },
+      { value: "Saaf & Khaas", label: "Saaf & Khaas", checked: false },
+      {
+        value: "Bake Parlor Big",
+        label: "Bake Parlor Big",
+        checked: false,
+      },
+      {
+        value: "Baking Food Items",
+        label: "Baking Food Items",
+        checked: false,
+      },
+      { value: "fauji", label: "fauji", checked: false },
+      { value: "Dry Rose", label: "Dry Rose", checked: false },
+      { value: "Boho Decor", label: "Boho Decor", checked: false },
+      { value: "Flying Wooden", label: "Flying Wooden", checked: false },
+      { value: "LED Lights", label: "LED Lights", checked: false },
+      { value: "luxury palace", label: "luxury palace", checked: false },
+      { value: "Golden", label: "Golden", checked: false },
     ],
   },
 ];
@@ -62,11 +111,94 @@ function classNames(...classes: string[]) {
 }
 
 export default function ProductLayout() {
+  const totalItems = useAppSelector((state) => state.products.products?.items);
+
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  // const useFilterSelector = useAppSelector((state) => state.products);
+  const filterDispatch = useAppDispatch();
+  // const sortdeDispatch = useAppDispatch();
+
+  const [filter, setFilter] = useState<Filter>({} as Filter);
+  const [lastKey, setLastKey] = useState<string>("");
+  const [checked, setChecked] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+
+  // const limit = ITEM_PER_PAGE;
+
+  const handleFilter = (
+    e: ChangeEvent<HTMLInputElement>,
+    section: FilterSection,
+    option: Option
+  ) => {
+    console.log({
+      e,
+      section,
+      option,
+    });
+
+    if (e.target.checked) {
+      setChecked(e.target.checked);
+      const newFilter = {
+        ...filter,
+        [section.id]: filter[section.id as keyof Filter]
+          ? [...filter[section.id as keyof Filter]!, option.value]
+          : [option.value],
+      };
+      setLastKey(section.id);
+      setFilter(newFilter);
+    } else {
+      setChecked(e.target.checked);
+      const newFilter = { ...filter };
+      const index = newFilter[section.id as keyof Filter]?.indexOf(
+        option.value
+      );
+      if (index !== -1 && index !== undefined) {
+        newFilter[section.id as keyof Filter]?.splice(index, 1);
+        if (newFilter[section.id as keyof Filter]?.length === 0) {
+          delete newFilter[section.id as keyof Filter];
+        }
+        setFilter(newFilter);
+      }
+    }
+  };
+
+  const handleSort = (sortedOption: SortedOption) => {
+    const newFilter = {
+      ...filter,
+      sort: filter[sortedOption?.sort as keyof Filter]
+        ? [...filter[sortedOption?.sort as keyof Filter]!, sortedOption.sort]
+        : [sortedOption.sort],
+    };
+    console.log(sortedOption);
+    setFilter(newFilter);
+    setLastKey("sort");
+    // sortdeDispatch(fetchSortedProductsAsync({ sort: sortedOption.sort }));
+  };
+
+  //pagination
+
+  const handlePagination = (page: number) => {
+    console.log({ page });
+    setPage(page);
+  };
+
+  // setInterval(handlePagination, 2000);
+
+  useEffect(() => {
+    const pagination = { _page: page, _per_page: ITEMS_PER_PAGE };
+    filterDispatch(
+      fetchFilteredProductsAsync({ filter, lastKey, checked, pagination })
+    );
+  }, [filter, filterDispatch, lastKey, checked, page]);
+  useEffect(() => {
+    setPage(1);
+  }, [totalItems]);
 
   return (
     <div className="bg-white ">
       <div>
+        <h1 className="text-4xl">page - {page}</h1>
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
           <Dialog
@@ -205,11 +337,11 @@ export default function ProductLayout() {
                 >
                   <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
-                      {sortOptions.map((option) => (
+                      {sortOptions.map((option: SortedOption) => (
                         <Menu.Item key={option.name}>
                           {({ active }) => (
-                            <a
-                              href={option.href}
+                            <p
+                              onClick={() => handleSort(option)}
                               className={classNames(
                                 option.current
                                   ? "font-medium text-gray-900"
@@ -219,7 +351,7 @@ export default function ProductLayout() {
                               )}
                             >
                               {option.name}
-                            </a>
+                            </p>
                           )}
                         </Menu.Item>
                       ))}
@@ -293,6 +425,9 @@ export default function ProductLayout() {
                                   name={`${section.id}[]`}
                                   defaultValue={option.value}
                                   type="checkbox"
+                                  onChange={(e) =>
+                                    handleFilter(e, section, option)
+                                  }
                                   defaultChecked={option.checked}
                                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                 />
@@ -319,7 +454,12 @@ export default function ProductLayout() {
               </div>
             </div>
           </section>
-          <Pagination />
+          <Pagination
+            page={page}
+            setPage={setPage}
+            handlePagination={handlePagination}
+            totalItems={totalItems as number}
+          />
         </main>
       </div>
     </div>
