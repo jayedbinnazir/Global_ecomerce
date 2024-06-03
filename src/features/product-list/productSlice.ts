@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Option, Paginated_Products } from "../../types/productTypes";
+import { Option, Paginated_Products, Product } from "../../types/productTypes";
 import {
   fetchAllBrand,
   fetchAllCategory,
   fetchAllProducts,
+  fetchProductById,
   fetchProductsByFilter,
   // fetchSortedProducts,
 } from "./productApi";
@@ -14,6 +15,7 @@ type State = {
   error: string;
   brands: Option[];
   category: Option[];
+  selectedProduct: Product | null;
 };
 
 const initialState: State = {
@@ -22,6 +24,7 @@ const initialState: State = {
   error: "",
   brands: [],
   category: [],
+  selectedProduct: null,
 };
 
 export const fetchProductsAsync = createAsyncThunk(
@@ -89,6 +92,13 @@ export const fetchAllBrandAsync = createAsyncThunk(
     return brands;
   }
 );
+export const fetchProductByIdAsync = createAsyncThunk(
+  "product/fetchProductById",
+  async (productId: number) => {
+    const product = await fetchProductById(productId);
+    return product;
+  }
+);
 
 const productSlice = createSlice({
   name: "product",
@@ -140,6 +150,17 @@ const productSlice = createSlice({
       .addCase(fetchAllBrandAsync.rejected, (state, action) => {
         (state.isLoading = false),
           (state.brands = []),
+          (state.error = action.error.message as string);
+      })
+      .addCase(fetchProductByIdAsync.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchProductByIdAsync.fulfilled, (state, action) => {
+        (state.isLoading = false), (state.selectedProduct = action.payload);
+      })
+      .addCase(fetchProductByIdAsync.rejected, (state, action) => {
+        (state.isLoading = false),
+          (state.selectedProduct = null),
           (state.error = action.error.message as string);
       });
     // .addCase(fetchSortedProductsAsync.pending, (state) => {

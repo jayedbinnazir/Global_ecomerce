@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { fetchProductByIdAsync } from "../productSlice";
+import { Params, useParams } from "react-router-dom";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -60,9 +63,43 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+interface ParamsId extends Params {
+  id: string;
+}
+
 export default function ProductDetails() {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
+  const params = useParams<ParamsId>();
+
+  const state = useAppSelector((state) => state.products);
+  const dispatchProductById = useAppDispatch();
+
+  useEffect(() => {
+    dispatchProductById(fetchProductByIdAsync(Number(params.id)));
+  }, [dispatchProductById, params.id]);
+
+  if (state.isLoading) {
+    return (
+      <img
+        src="/spinner.svg"
+        alt="Icon"
+        width="100"
+        height="100"
+        className="motion-safe:animate-spin mx-auto "
+      />
+    );
+  }
+
+  if (state.error) {
+    return (
+      <h1 className=" flex justify-center text-4xl font-semibold">
+        {state.error}
+      </h1>
+    );
+  }
+
+  console.log({ selectedProduct: state.selectedProduct });
 
   return (
     <div className="bg-white">
@@ -100,7 +137,7 @@ export default function ProductDetails() {
                 aria-current="page"
                 className="font-medium text-gray-500 hover:text-gray-600"
               >
-                {product.name}
+                {state.selectedProduct?.title}
               </a>
             </li>
           </ol>
@@ -110,7 +147,7 @@ export default function ProductDetails() {
         <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
           <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
             <img
-              src={product.images[0].src}
+              src={state.selectedProduct?.images[0]}
               alt={product.images[0].alt}
               className="h-full w-full object-cover object-center"
             />
@@ -118,14 +155,14 @@ export default function ProductDetails() {
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
             <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
               <img
-                src={product.images[1].src}
+                src={state.selectedProduct?.images[1]}
                 alt={product.images[1].alt}
                 className="h-full w-full object-cover object-center"
               />
             </div>
             <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
               <img
-                src={product.images[2].src}
+                src={state.selectedProduct?.images[2]}
                 alt={product.images[2].alt}
                 className="h-full w-full object-cover object-center"
               />
@@ -133,7 +170,7 @@ export default function ProductDetails() {
           </div>
           <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
             <img
-              src={product.images[3].src}
+              src={state.selectedProduct?.images[3]}
               alt={product.images[3].alt}
               className="h-full w-full object-cover object-center"
             />
@@ -144,7 +181,7 @@ export default function ProductDetails() {
         <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-              {product.name}
+              {state.selectedProduct?.title}
             </h1>
           </div>
 
@@ -152,7 +189,7 @@ export default function ProductDetails() {
           <div className="mt-4 lg:row-span-3 lg:mt-0">
             <h2 className="sr-only">Product information</h2>
             <p className="text-3xl tracking-tight text-gray-900">
-              {product.price}
+              ${state.selectedProduct?.price}
             </p>
 
             {/* Reviews */}
@@ -176,9 +213,9 @@ export default function ProductDetails() {
                 <p className="sr-only">{reviews.average} out of 5 stars</p>
                 <a
                   href={reviews.href}
-                  className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                  className="ml-3 text-lg font-medium text-indigo-600 hover:text-indigo-500"
                 >
-                  {reviews.totalCount} reviews
+                  {state.selectedProduct?.rating}
                 </a>
               </div>
             </div>
@@ -322,7 +359,9 @@ export default function ProductDetails() {
               <h3 className="sr-only">Description</h3>
 
               <div className="space-y-6">
-                <p className="text-base text-gray-900">{product.description}</p>
+                <p className="text-base text-gray-900">
+                  {state.selectedProduct?.description}
+                </p>
               </div>
             </div>
 
