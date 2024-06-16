@@ -2,10 +2,11 @@ import { createBrowserRouter } from "react-router-dom";
 import ProductList from "../features/product-list/ProductList";
 import Home from "../pages/Home";
 import LoginPage from "../pages/LoginPage";
-import Register from "../features/auth/components/Register";
 import CartPage from "../pages/CartPage";
 import Checkout from "../pages/CheckOutPage";
 import ProductDetailPage from "../pages/ProductDetailPage";
+import RegisterPage from "../pages/RegisterPage";
+import Protected from "../features/auth/Protected";
 
 export const router = createBrowserRouter([
   {
@@ -24,18 +25,30 @@ export const router = createBrowserRouter([
   },
   {
     path: "/auth/register",
-    element: <Register />,
+    element: <RegisterPage />,
   },
   {
     path: "/cart",
-    element: <CartPage />,
+    element: (
+      <Protected>
+        <CartPage />
+      </Protected>
+    ),
   },
   {
     path: "/cart/checkout",
-    element: <Checkout />,
+    element: (
+      <Protected>
+        <Checkout />
+      </Protected>
+    ),
   },
   {
     path: "/product-details/:id",
-    element: <ProductDetailPage />,
+    element: (
+      <Protected>
+        <ProductDetailPage />
+      </Protected>
+    ),
   },
 ]);

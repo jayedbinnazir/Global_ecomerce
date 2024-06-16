@@ -9,7 +9,7 @@ export type Products = {
 };
 
 export type Product = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   price: number;

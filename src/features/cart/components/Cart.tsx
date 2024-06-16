@@ -1,5 +1,10 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { useEffect } from "react";
+import { fetchItemByUserIdAsync } from "../cartSlice";
+import { CartProduct } from "../cartTypes";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const products = [
   {
     id: 1,
@@ -31,6 +36,33 @@ const products = [
 export default function Cart() {
   const location = useLocation();
 
+  const { isLoading, items, error } = useAppSelector((state) => state.cart);
+  const { loggedinUser } = useAppSelector((state) => state.users);
+  const dispathcCartProduct = useAppDispatch();
+
+  useEffect(() => {
+    dispathcCartProduct(fetchItemByUserIdAsync(loggedinUser?.id as string));
+  }, [dispathcCartProduct, loggedinUser?.id]);
+
+  if (isLoading) {
+    return (
+      <img
+        src="/spinner.svg"
+        alt="Icon"
+        width="100"
+        height="100"
+        className="motion-safe:animate-spin mx-auto "
+      />
+    );
+  }
+  if (error) {
+    return (
+      <h1 className=" flex justify-center text-4xl font-semibold">{error}</h1>
+    );
+  }
+
+  console.log({ items });
+
   return (
     <div className="mx-auto bg-white  max-w-2xl px-4 py-0 sm:px-6 mb-5 sm:py-0 lg:max-w-5xl lg:px-8">
       {location.pathname === "/cart/checkout" ? (
@@ -45,12 +77,12 @@ export default function Cart() {
 
       <div className="flow-root border-t border-gray-200 px-4 border-b py-6 sm:px-6 ">
         <ul role="list" className="-my-6 divide-y divide-gray-200">
-          {products.map((product) => (
+          {items.map((product) => (
             <li key={product.id} className="flex py-6">
               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                 <img
-                  src={product.imageSrc}
-                  alt={product.imageAlt}
+                  src={product.thumbnail}
+                  alt={product.images[0]}
                   className="h-full w-full object-cover object-center"
                 />
               </div>
@@ -59,11 +91,13 @@ export default function Cart() {
                 <div>
                   <div className="flex justify-between text-base font-medium text-gray-900">
                     <h3>
-                      <a href={product.href}>{product.name}</a>
+                      <NavLink to={`/product-details/` + product.id}>
+                        {product.title}
+                      </NavLink>
                     </h3>
                     <p className="ml-4">{product.price}</p>
                   </div>
-                  <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                  <p className="mt-1 text-sm text-gray-500"></p>
                 </div>
                 <div className="flex flex-1 items-end justify-between text-sm">
                   <div className="text-gray-500 flex gap-1 items-baseline ">
@@ -97,7 +131,14 @@ export default function Cart() {
       <div className=" border-gray-200 px-4  py-6 sm:px-6">
         <div className="flex justify-between text-base font-medium text-gray-900">
           <p>Subtotal</p>
-          <p>$262.00</p>
+          <p>
+            $
+            {items.reduce(
+              (sum: number, current: CartProduct): number =>
+                sum + current.price,
+              0
+            )}
+          </p>
         </div>
         <p className="mt-0.5 text-sm text-gray-500">
           Shipping and taxes calculated at checkout.

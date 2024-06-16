@@ -1,8 +1,32 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { User } from "../types/types";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { loginUserAsync } from "../authSlice";
 
 const Login = () => {
+  const { loggedinUser, error } = useAppSelector((state) => state.users);
+  const dispatchLogin = useAppDispatch();
+
+  console.log({ loggedinUser, error });
+
+  const form = useForm<User>();
+
+  const { register, handleSubmit, formState } = form;
+
+  const { errors } = formState;
+  console.log(errors);
+
+  const login = (data: User) => {
+    console.log(data);
+    if (data) {
+      dispatchLogin(loginUserAsync({ ...data }));
+    }
+  };
+
   return (
     <>
+      {loggedinUser && <Navigate to={"/"} replace={true} />}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -16,7 +40,7 @@ const Login = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" onSubmit={handleSubmit(login)} noValidate>
             <div>
               <label
                 htmlFor="email"
@@ -27,13 +51,25 @@ const Login = () => {
               <div className="mt-2">
                 <input
                   id="email"
-                  name="email"
+                  {...register("email", {
+                    required: {
+                      value: true,
+                      message: "email is required !",
+                    },
+                    pattern: {
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      message: "Invalid email address",
+                    },
+                  })}
                   type="email"
                   autoComplete="email"
-                  required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
+              <h1 className="text-sm font-semibold text-error">
+                {" "}
+                {errors?.email ? errors.email.message : null}{" "}
+              </h1>
             </div>
 
             <div>
@@ -56,13 +92,26 @@ const Login = () => {
               <div className="mt-2">
                 <input
                   id="password"
-                  name="password"
                   type="password"
                   autoComplete="current-password"
-                  required
+                  {...register("password", {
+                    required: {
+                      value: true,
+                      message: "password is required !",
+                    },
+                    pattern: {
+                      value:
+                        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+                      message: "password is not valid",
+                    },
+                  })}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
+              <h1 className="text-sm font-semibold text-error">
+                {" "}
+                {errors?.password ? errors.password.message : null}{" "}
+              </h1>
             </div>
 
             <div>
@@ -73,6 +122,7 @@ const Login = () => {
                 Sign in
               </button>
             </div>
+            <p className="text-error text-center">{error ? error : null}</p>
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">

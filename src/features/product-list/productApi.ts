@@ -116,7 +116,7 @@ export const fetchAllBrand = async () => {
   // return brands as Option[];
 };
 
-export const fetchProductById = async (productId: number) => {
+export const fetchProductById = async (productId: string) => {
   const response = await fetch(`http://localhost:5000/products/${productId}`);
   const product = await response.json();
   return product;

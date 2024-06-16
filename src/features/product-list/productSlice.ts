@@ -94,7 +94,7 @@ export const fetchAllBrandAsync = createAsyncThunk(
 );
 export const fetchProductByIdAsync = createAsyncThunk(
   "product/fetchProductById",
-  async (productId: number) => {
+  async (productId: string) => {
     const product = await fetchProductById(productId);
     return product;
   }

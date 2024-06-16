@@ -48,7 +48,9 @@
       "brand": "Samsung",
       "category": "smartphones",
       "thumbnail": "https://cdn.dummyjson.com/product-images/3/thumbnail.jpg",
-      "images": ["https://cdn.dummyjson.com/product-images/3/1.jpg"]
+      "images": [
+        "https://cdn.dummyjson.com/product-images/3/1.jpg"
+      ]
     },
     {
       "id": "4",
@@ -555,169 +557,367 @@
     {
       "value": "smartphones",
       "label": "smartphones",
-      "checked": false
+      "checked": false,
+      "id": "a1ff"
     },
     {
       "value": "laptops",
       "label": "laptops",
-      "checked": false
+      "checked": false,
+      "id": "78ac"
     },
     {
       "value": "fragrances",
       "label": "fragrances",
-      "checked": false
+      "checked": false,
+      "id": "6f30"
     },
     {
       "value": "skincare",
       "label": "skincare",
-      "checked": false
+      "checked": false,
+      "id": "76fc"
     },
     {
       "value": "groceries",
       "label": "groceries",
-      "checked": false
+      "checked": false,
+      "id": "c735"
     },
     {
       "value": "home-decoration",
       "label": "home decoration",
-      "checked": false
+      "checked": false,
+      "id": "6306"
     }
   ],
   "brands": [
     {
       "value": "Apple",
       "label": "Apple",
-      "checked": false
+      "checked": false,
+      "id": "fb25"
     },
     {
       "value": "Samsung",
       "label": "Samsung",
-      "checked": false
+      "checked": false,
+      "id": "1ab8"
     },
     {
       "value": "OPPO",
       "label": "OPPO",
-      "checked": false
+      "checked": false,
+      "id": "39db"
     },
     {
       "value": "Huawei",
       "label": "Huawei",
-      "checked": false
+      "checked": false,
+      "id": "f3e5"
     },
     {
       "value": "Microsoft Surface",
       "label": "Microsoft Surface",
-      "checked": false
+      "checked": false,
+      "id": "2647"
     },
     {
       "value": "Infinix",
       "label": "Infinix",
-      "checked": false
+      "checked": false,
+      "id": "f030"
     },
     {
       "value": "HP Pavilion",
       "label": "HP Pavilion",
-      "checked": false
+      "checked": false,
+      "id": "6ebf"
     },
     {
       "value": "Impression of Acqua Di Gio",
       "label": "Impression of Acqua Di Gio",
-      "checked": false
+      "checked": false,
+      "id": "8b37"
     },
     {
       "value": "Royal_Mirage",
       "label": "Royal_Mirage",
-      "checked": false
+      "checked": false,
+      "id": "76c0"
     },
     {
       "value": "Fog Scent Xpressio",
       "label": "Fog Scent Xpressio",
-      "checked": false
+      "checked": false,
+      "id": "79d4"
     },
     {
       "value": "Al Munakh",
       "label": "Al Munakh",
-      "checked": false
+      "checked": false,
+      "id": "c087"
     },
     {
       "value": "Lord - Al-Rehab",
       "label": "Lord   Al Rehab",
-      "checked": false
+      "checked": false,
+      "id": "e7ee"
     },
     {
       "value": "L'Oreal Paris",
       "label": "L'Oreal Paris",
-      "checked": false
+      "checked": false,
+      "id": "67d3"
     },
     {
       "value": "Hemani Tea",
       "label": "Hemani Tea",
-      "checked": false
+      "checked": false,
+      "id": "ae18"
     },
     {
       "value": "Dermive",
       "label": "Dermive",
-      "checked": false
+      "checked": false,
+      "id": "898a"
     },
     {
       "value": "ROREC White Rice",
       "label": "ROREC White Rice",
-      "checked": false
+      "checked": false,
+      "id": "4de3"
     },
     {
       "value": "Fair & Clear",
       "label": "Fair & Clear",
-      "checked": false
+      "checked": false,
+      "id": "f8c2"
     },
     {
       "value": "Saaf & Khaas",
       "label": "Saaf & Khaas",
-      "checked": false
+      "checked": false,
+      "id": "fcc8"
     },
     {
       "value": "Bake Parlor Big",
       "label": "Bake Parlor Big",
-      "checked": false
+      "checked": false,
+      "id": "153f"
     },
     {
       "value": "Baking Food Items",
       "label": "Baking Food Items",
-      "checked": false
+      "checked": false,
+      "id": "34b6"
     },
     {
       "value": "fauji",
       "label": "fauji",
-      "checked": false
+      "checked": false,
+      "id": "1d6a"
     },
     {
       "value": "Dry Rose",
       "label": "Dry Rose",
-      "checked": false
+      "checked": false,
+      "id": "c70a"
     },
     {
       "value": "Boho Decor",
       "label": "Boho Decor",
-      "checked": false
+      "checked": false,
+      "id": "200a"
     },
     {
       "value": "Flying Wooden",
       "label": "Flying Wooden",
-      "checked": false
+      "checked": false,
+      "id": "74ee"
     },
     {
       "value": "LED Lights",
       "label": "LED Lights",
-      "checked": false
+      "checked": false,
+      "id": "1ea6"
     },
     {
       "value": "luxury palace",
       "label": "luxury palace",
-      "checked": false
+      "checked": false,
+      "id": "777f"
     },
     {
       "value": "Golden",
       "label": "Golden",
-      "checked": false
+      "checked": false,
+      "id": "14d0"
+    }
+  ],
+  "users": [
+    {
+      "id": "2bb1",
+      "email": "jayed.database@gmail.com",
+      "password": "Jayed015"
+    },
+    {
+      "id": "9814",
+      "email": "berruswhis015@gmail.com",
+      "password": "Jayed015"
+    },
+    {
+      "id": "eb55",
+      "email": "jayed.freelance@gmail.com",
+      "password": "Jayed015"
+    }
+  ],
+  "carts": [
+    {
+      "id": "4",
+      "title": "OPPOF19",
+      "description": "OPPO F19 is officially announced on April 2021.",
+      "price": 280,
+      "discountPercentage": 17.91,
+      "rating": 4.3,
+      "stock": 123,
+      "brand": "OPPO",
+      "category": "smartphones",
+      "thumbnail": "https://cdn.dummyjson.com/product-images/4/thumbnail.jpg",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/4/1.jpg",
+        "https://cdn.dummyjson.com/product-images/4/2.jpg",
+        "https://cdn.dummyjson.com/product-images/4/3.jpg",
+        "https://cdn.dummyjson.com/product-images/4/4.jpg",
+        "https://cdn.dummyjson.com/product-images/4/thumbnail.jpg"
+      ],
+      "quantity": 1,
+      "userId": "2bb1"
+    },
+    {
+      "id": "4",
+      "title": "OPPOF19",
+      "description": "OPPO F19 is officially announced on April 2021.",
+      "price": 280,
+      "discountPercentage": 17.91,
+      "rating": 4.3,
+      "stock": 123,
+      "brand": "OPPO",
+      "category": "smartphones",
+      "thumbnail": "https://cdn.dummyjson.com/product-images/4/thumbnail.jpg",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/4/1.jpg",
+        "https://cdn.dummyjson.com/product-images/4/2.jpg",
+        "https://cdn.dummyjson.com/product-images/4/3.jpg",
+        "https://cdn.dummyjson.com/product-images/4/4.jpg",
+        "https://cdn.dummyjson.com/product-images/4/thumbnail.jpg"
+      ],
+      "quantity": 1,
+      "userId": "2bb1"
+    },
+    {
+      "id": "4",
+      "title": "OPPOF19",
+      "description": "OPPO F19 is officially announced on April 2021.",
+      "price": 280,
+      "discountPercentage": 17.91,
+      "rating": 4.3,
+      "stock": 123,
+      "brand": "OPPO",
+      "category": "smartphones",
+      "thumbnail": "https://cdn.dummyjson.com/product-images/4/thumbnail.jpg",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/4/1.jpg",
+        "https://cdn.dummyjson.com/product-images/4/2.jpg",
+        "https://cdn.dummyjson.com/product-images/4/3.jpg",
+        "https://cdn.dummyjson.com/product-images/4/4.jpg",
+        "https://cdn.dummyjson.com/product-images/4/thumbnail.jpg"
+      ],
+      "quantity": 1,
+      "userId": "eb55"
+    },
+    {
+      "id": "15",
+      "title": "Eau De Perfume Spray",
+      "description": "Genuine  Al-Rehab spray perfume from UAE/Saudi Arabia/Yemen High Quality",
+      "price": 30,
+      "discountPercentage": 10.99,
+      "rating": 4.7,
+      "stock": 105,
+      "brand": "Lord - Al-Rehab",
+      "category": "fragrances",
+      "thumbnail": "https://cdn.dummyjson.com/product-images/15/thumbnail.jpg",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/15/1.jpg",
+        "https://cdn.dummyjson.com/product-images/15/2.jpg",
+        "https://cdn.dummyjson.com/product-images/15/3.jpg",
+        "https://cdn.dummyjson.com/product-images/15/4.jpg",
+        "https://cdn.dummyjson.com/product-images/15/thumbnail.jpg"
+      ],
+      "quantity": 1,
+      "userId": "eb55"
+    },
+    {
+      "id": "19",
+      "title": "Skin Beauty Serum.",
+      "description": "Product name: rorec collagen hyaluronic acid white face serum riceNet weight: 15 m",
+      "price": 46,
+      "discountPercentage": 10.68,
+      "rating": 4.42,
+      "stock": 54,
+      "brand": "ROREC White Rice",
+      "category": "skincare",
+      "thumbnail": "https://cdn.dummyjson.com/product-images/19/thumbnail.jpg",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/19/1.jpg",
+        "https://cdn.dummyjson.com/product-images/19/2.jpg",
+        "https://cdn.dummyjson.com/product-images/19/3.png",
+        "https://cdn.dummyjson.com/product-images/19/thumbnail.jpg"
+      ],
+      "quantity": 1,
+      "userId": "eb55"
+    },
+    {
+      "id": "23",
+      "title": "Orange Essence Food Flavou",
+      "description": "Specifications of Orange Essence Food Flavour For Cakes and Baking Food Item",
+      "price": 14,
+      "discountPercentage": 8.04,
+      "rating": 4.85,
+      "stock": 26,
+      "brand": "Baking Food Items",
+      "category": "groceries",
+      "thumbnail": "https://cdn.dummyjson.com/product-images/23/thumbnail.jpg",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/23/1.jpg",
+        "https://cdn.dummyjson.com/product-images/23/2.jpg",
+        "https://cdn.dummyjson.com/product-images/23/3.jpg",
+        "https://cdn.dummyjson.com/product-images/23/4.jpg",
+        "https://cdn.dummyjson.com/product-images/23/thumbnail.jpg"
+      ],
+      "quantity": 1,
+      "userId": "eb55"
+    },
+    {
+      "id": "28",
+      "title": "3D Embellishment Art Lamp",
+      "description": "3D led lamp sticker Wall sticker 3d wall art light on/off button  cell operated (included)",
+      "price": 20,
+      "discountPercentage": 16.49,
+      "rating": 4.82,
+      "stock": 54,
+      "brand": "LED Lights",
+      "category": "home-decoration",
+      "thumbnail": "https://cdn.dummyjson.com/product-images/28/thumbnail.jpg",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/28/1.jpg",
+        "https://cdn.dummyjson.com/product-images/28/2.jpg",
+        "https://cdn.dummyjson.com/product-images/28/3.png",
+        "https://cdn.dummyjson.com/product-images/28/4.jpg",
+        "https://cdn.dummyjson.com/product-images/28/thumbnail.jpg"
+      ],
+      "quantity": 1,
+      "userId": "eb55"
     }
   ],
   "total": 100,
